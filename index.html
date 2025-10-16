@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деревянные Чудеса | Резные изделия на станке ЧПУ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --wood-dark: #8B4513;
+            --wood-medium: #A0522D;
+            --wood-light: #DEB887;
+            --wood-accent: #D2691E;
+            --gold: #FFD700;
+            --festive-red: #DC143C;
+            --festive-green: #228B22;
+            --natural-light: #FFF8DC;
+            --warm-yellow: #FFEBCD;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--natural-light) 0%, var(--warm-yellow) 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes bannerSwing {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Ярмарочная шапка */
+        header {
+            background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood-medium) 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(139, 69, 19, 0.4);
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .festive-banner {
+            background: linear-gradient(90deg, var(--festive-red), var(--gold), var(--festive-green));
+            color: white;
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: bold;
+            position: relative;
+            animation: bannerSwing 3s ease-in-out infinite;
+        }
+
+        .festive-banner::before, .festive-banner::after {
+            content: '🎪';
+            margin: 0 1rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .logo-icon {
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Герой секция - Ярмарочный стиль */
+        #hero {
+            background: linear-gradient(rgba(139, 69, 19, 0.9), rgba(160, 82, 45, 0.95)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" opacity="0.1"><path d="M100,100 Q300,50 500,100 T900,100" stroke="%23FFD700" stroke-width="4" fill="none"/><path d="M50,300 Q200,200 600,300 T1150,300" stroke="%23FFD700" stroke-width="3" fill="none"/><circle cx="200" cy="500" r="30" fill="%23DC143C"/><circle cx="800" cy="600" r="25" fill="%23228B22"/></svg>');
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-sparkles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease 0.2s both;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(135deg, var(--festive-red) 0%, var(--gold) 100%);
+            color: white;
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s both;
+            box-shadow: 0 10px 30px rgba(220, 20, 60, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(220, 20, 60, 0.6);
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem 1.5rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        /* Специальное предложение */
+        .special-offer {
+            background: linear-gradient(135deg, var(--festive-red), var(--gold));
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 2rem auto;
+            max-width: 800px;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(220, 20, 60, 0.3);
+        }
+
+        .special-offer::before {
+            content: '🔥';
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.3;
+            top: 50%;
+            left: 10%;
+            transform: translateY(-50%);
+        }
+
+        .special-offer::after {
+            content: '🎁';
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.3;
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%);
+        }
+
+        .special-offer h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Продукция - Ярмарочные карточки */
+        #products {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--natural-light) 0%, #FFF5EE 100%);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--wood-dark);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--festive-red), var(--gold), var(--festive-green));
+            border-radius: 2px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(139, 69, 19, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 3px;
+            background: linear-gradient(135deg, var(--festive-red), var(--gold), var(--festive-green));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 60px rgba(139, 69, 19, 0.3);
+        }
+
+        .product-image {
+            height: 250px;
+            background: linear-gradient(45deg, var(--wood-light), var(--wood-medium));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--festive-red);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        .product-info {
+            padding: 2rem;
+        }
+
+        .product-info h3 {
+            color: var(--wood-dark);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--festive-red);
+            margin: 1.5rem 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1.2rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            font-size: 1.1rem;
+            min-height: 60px;
+        }
+
+        .btn-phone {
+            background: linear-gradient(135deg, var(--festive-green), #1E7E34);
+            color: white;
+            box-shadow: 0 5px 15px rgba(34, 139, 34, 0.3);
+        }
+
+        .btn-phone:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(34, 139, 34, 0.4);
+        }
+
+        /* Анимация смены текста кнопки - УВЕЛИЧЕН ШРИФТ */
+        .btn-phone .default-text,
+        .btn-phone .hover-text {
+            transition: all 0.3s ease;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .btn-phone .hover-text {
+            opacity: 0;
+            transform: translate(-50%, 20px);
+            font-size: 1.3rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .btn-phone:hover .default-text {
+            opacity: 0;
+            transform: translate(-50%, -20px);
+        }
+
+        .btn-phone:hover .hover-text {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            font-size: 1.3rem;
+        }
+
+        /* Заказ - Ярмарочный стиль */
+        #order {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--wood-medium) 0%, var(--wood-dark) 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #order::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><circle cx="20" cy="20" r="5" fill="%23FFD700"/><circle cx="80" cy="30" r="7" fill="%23FFD700"/><circle cx="40" cy="80" r="6" fill="%23FFD700"/></svg>');
+        }
+
+        .order-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 4rem;
+            text-align: center;
+            position: relative;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .contact-method {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 2rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .contact-method:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px);
+        }
+
+        .contact-method i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .phone-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            margin: 1rem 0;
+            min-width: 320px;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--festive-green), #1E7E34);
+            color: white;
+            box-shadow: 0 8px 25px rgba(34, 139, 34, 0.4);
+        }
+
+        .phone-link:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(34, 139, 34, 0.6);
+        }
+
+        /* Футер */
+        footer {
+            background: linear-gradient(135deg, var(--wood-dark) 0%, #5D4037 100%);
+            color: white;
+            padding: 4rem 0 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 1.5rem;
+            color: var(--gold);
+            font-size: 1.3rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-features {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .product-actions {
+                flex-direction: column;
+            }
+
+            .btn-phone .default-text,
+            .btn-phone .hover-text {
+                font-size: 1.1rem;
+            }
+
+            .btn-phone:hover .hover-text {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Ярмарочный баннер -->
+    <div class="festive-banner">
+        🎪 Специальные цены на ярмарке! Приходите к нам на стенд! 🎪
+    </div>
+
+    <!-- Шапка -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-gem logo-icon" style="color: var(--gold);"></i>
+                    <span>Деревянные Чудеса</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#hero">Главная</a></li>
+                    <li><a href="#products">Изделия</a></li>
+                    <li><a href="#order">Заказать</a></li>
+                    <li><a href="#order">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Герой секция -->
+    <section id="hero">
+        <div class="hero-sparkles" id="sparklesContainer"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Деревянные шедевры на заказ! 🎨</h1>
+                <p>Уникальные изделия, вырезанные на современном станке ЧПУ с ювелирной точностью</p>
+                <a href="#products" class="cta-button">
+                    <i class="fas fa-shopping-cart"></i>
+                    Выбрать изделие
+                </a>
+                
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <i class="fas fa-shipping-fast" style="color: var(--gold);"></i>
+                        <span>Быстрая доставка</span>
+                    </div>
+                    <div class="hero-feature">
+                        <i class="fas fa-award" style="color: var(--gold);"></i>
+                        <span>Гарантия качества</span>
+                    </div>
+                    <div class="hero-feature">
+                        <i class="fas fa-gift" style="color: var(--gold);"></i>
+                        <span>Подарочная упаковка</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Специальное предложение -->
+    <div class="container">
+        <div class="special-offer fade-in">
+            <h3>🎁 Ярмарочная акция!</h3>
+            <p>При заказе на сайте - скидка 15% + бесплатная гравировка!</p>
+            <small>Акция действует до конца месяца</small>
+        </div>
+    </div>
+
+    <!-- Продукция -->
+    <section id="products">
+        <div class="container">
+            <h2 class="section-title fade-in">Наши популярные изделия 🛍️</h2>
+            <div class="products-grid">
+                <!-- Изделие 1 -->
+                <div class="product-card fade-in">
+                    <div class="product-image">
+                        <i class="fas fa-key"></i>
+                        <div class="product-badge">Хит продаж!</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Ключницы</h3>
+                        <p>Стильные ключницы с индивидуальным дизайном</p>
+                        <div class="product-price">от 650 ₽ до 2500 ₽</div>
+                        <div class="product-actions">
+                            <a href="tel:+79048899873" class="btn btn-phone">
+                                <span class="default-text">
+                                    <i class="fas fa-phone"></i> Заказать по телефону
+                                </span>
+                                <span class="hover-text">
+                                    <i class="fas fa-phone"></i> +7 904 889 9873
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Изделие 2 -->
+                <div class="product-card fade-in">
+                    <div class="product-image">
+                        <i class="fas fa-home"></i>
+                        <div class="product-badge">Популярно!</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Номерки на дом</h3>
+                        <p>Элегантные номерки для частных домов</p>
+                        <div class="product-price">от 100 ₽ до 300 ₽</div>
+                        <div class="product-actions">
+                            <a href="tel:+79048899873" class="btn btn-phone">
+                                <span class="default-text">
+                                    <i class="fas fa-phone"></i> Заказать по телефону
+                                </span>
+                                <span class="hover-text">
+                                    <i class="fas fa-phone"></i> +7 904 889 9873
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Изделие 3 -->
+                <div class="product-card fade-in">
+                    <div class="product-image">
+                        <i class="fas fa-signature"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Именные таблички</h3>
+                        <p>Персонализированные таблички для офиса и дома</p>
+                        <div class="product-price">от 600 ₽ до 1000 ₽</div>
+                        <div class="product-actions">
+                            <a href="tel:+79048899873" class="btn btn-phone">
+                                <span class="default-text">
+                                    <i class="fas fa-phone"></i> Заказать по телефону
+                                </span>
+                                <span class="hover-text">
+                                    <i class="fas fa-phone"></i> +7 904 889 9873
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Изделие 4 -->
+                <div class="product-card fade-in">
+                    <div class="product-image">
+                        <i class="fas fa-image"></i>
+                        <div class="product-badge">Новинка!</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Фото на заказ</h3>
+                        <p>Вырезаем любые фото и изображения на дереве</p>
+                        <div class="product-price">от 300 ₽</div>
+                        <div class="product-actions">
+                            <a href="tel:+79048899873" class="btn btn-phone">
+                                <span class="default-text">
+                                    <i class="fas fa-phone"></i> Заказать по телефону
+                                </span>
+                                <span class="hover-text">
+                                    <i class="fas fa-phone"></i> +7 904 889 9873
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Заказ -->
+    <section id="order">
+        <div class="container">
+            <h2 class="section-title fade-in" style="color: white;">Закажите прямо сейчас! 📞</h2>
+            <div class="order-container fade-in">
+                <h3 style="margin-bottom: 1rem; font-size: 2rem;">Свяжитесь с нами по телефону</h3>
+                <p style="margin-bottom: 3rem; font-size: 1.2rem; opacity: 0.9;">Мы на связи и готовы ответить на все ваши вопросы!</p>
+                
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <i class="fas fa-phone" style="color: var(--festive-green); font-size: 4rem;"></i>
+                        <h4>Телефон для заказов</h4>
+                        <p>Позвоните для консультации и оформления заказа</p>
+                        <a href="tel:+79048899873" class="phone-link">
+                            <i class="fas fa-phone"></i>
+                            +7 904 889 9873
+                        </a>
+                        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">
+                            Звоните с 9:00 до 20:00 ежедневно
+                        </p>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <i class="fas fa-store" style="color: var(--gold); font-size: 4rem;"></i>
+                        <h4>Приходите на ярмарку!</h4>
+                        <p>Посмотрите изделия вживую и получите специальные цены</p>
+                        <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 15px; margin-top: 1rem;">
+                            <p><strong>📍 Место:</strong> Центральная городская ярмарка</p>
+                            <p><strong>🕒 Время:</strong> Сб-Вс 10:00-18:00</p>
+                            <p><strong>🎁 Акция:</strong> Скидка 10% при покупке на ярмарке!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 15px;">
+                    <h4 style="margin-bottom: 1rem; color: var(--gold);">🎯 Почему выбирают нас?</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: left;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: var(--gold);"></i>
+                            <span>Бесплатная доставка по городу</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: var(--gold);"></i>
+                            <span>Гарантия 1 год на все изделия</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: var(--gold);"></i>
+                            <span>Индивидуальный подход к каждому</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check" style="color: var(--gold);"></i>
+                            <span>Скидки при оптовых заказах</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Деревянные Чудеса</h4>
+                    <p>Создаём уникальные деревянные изделия с помощью современных технологий ЧПУ. Качество, точность, красота!</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="https://t.me/ваш_telegram"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Часы работы</h4>
+                    <p>Пн-Пт: 9:00 - 20:00</p>
+                    <p>Сб-Вс: 10:00 - 18:00</p>
+                    <p style="margin-top: 1rem;">
+                        <strong>📞 Телефон для заказов:</strong><br>
+                        +7 904 889 9873
+                    </p>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Быстрые ссылки</h4>
+                    <ul style="list-style: none;">
+                        <li><a href="#products" style="color: rgba(255,255,255,0.8); text-decoration: none;">Каталог изделий</a></li>
+                        <li><a href="#order" style="color: rgba(255,255,255,0.8); text-decoration: none;">Сделать заказ</a></li>
+                        <li><a href="#order" style="color: rgba(255,255,255,0.8); text-decoration: none;">Доставка и оплата</a></li>
+                        <li><a href="#order" style="color: rgba(255,255,255,0.8); text-decoration: none;">Отзывы</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Деревянные Чудеса. Все права защищены.</p>
+                <p style="margin-top: 0.5rem;">Создано с ❤️ для ценителей деревянного искусства | Телефон: +7 904 889 9873</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Анимация появления элементов при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Создание блёсток
+        function createSparkles() {
+            const container = document.getElementById('sparklesContainer');
+            for (let i = 0; i < 20; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                sparkle.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                container.appendChild(sparkle);
+            }
+        }
+
+        // Анимация для кнопок заказа
+        document.querySelectorAll('.btn-phone, .phone-link').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.05)';
+            });
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Случайное мерцание специального предложения
+        const specialOffer = document.querySelector('.special-offer');
+        setInterval(() => {
+            specialOffer.style.animation = 'none';
+            setTimeout(() => {
+                specialOffer.style.animation = 'pulse 2s ease-in-out infinite';
+            }, 10);
+        }, 5000);
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            createSparkles();
+            
+            // Добавляем классы анимации для элементов, которые уже в viewport
+            document.querySelectorAll('.fade-in').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    el.classList.add('visible');
+                }
+            });
+        });
+
+        // Эффект параллакса для героя
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.getElementById('hero');
+            hero.style.backgroundPositionY = -(scrolled * 0.5) + 'px';
+        });
+
+        // Клик по номеру телефона
+        document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+            link.addEventListener('click', function() {
+                alert('Звоните нам по номеру +7 904 889 9873! Мы с радостью ответим на все ваши вопросы! 📞');
+            });
+        });
+    </script>
+</body>
+</html>
